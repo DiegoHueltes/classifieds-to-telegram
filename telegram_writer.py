@@ -14,7 +14,9 @@ class TelegramWriter:
                 try:
                     posts = bot.get()
                     for post in posts:
-                        self.telegram.sendMessage(chat_id=self.chat, text=post)
+                        self.telegram.sendMessage(chat_id=self.chat, text=post['text'])
+                        if post['image']:
+                            self.telegram.sendPhoto(chat_id=self.chat, photo=post['image'])
                 except Exception as e:
                     print(e)
             time.sleep(wait_seconds)

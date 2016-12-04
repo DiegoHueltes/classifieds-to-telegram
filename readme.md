@@ -25,7 +25,10 @@ if __name__ == '__main__':
 ```
 
 As you can see, TelegramWritter.run is designed to receive multiple crawler objects. 
-If you want to add some other, you just have to create a class with a method "get" that returns a strings list with the messages to send
+If you want to add some other, you just have to create a class with a method "get" that returns a list with the messages and photos to send in this format:
+```python
+{'image': image_url, 'text': text_to_send}
+```
 
 ##TODO:
 1. Add some doc to the functions

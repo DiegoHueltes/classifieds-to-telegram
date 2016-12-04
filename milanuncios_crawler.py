@@ -34,12 +34,12 @@ class MilanunciosCrawler:
             image = image_element['src'] if image_element else ''
             other_info = ' '.join([tag.text for tag in post.findAll("div", {"class": "tag-mobile"})])
 
-            description = '\n'.join([title, description, type_rent, other_info, price, image])
+            description = '\n'.join([title, description, type_rent, other_info, price])
 
             self.last_posts.append(dict(id=int(id_post),
-                                             href=href,
-                                             description=description,
-                                             image=image))
+                                        href=href,
+                                        description=description,
+                                        image=image))
 
     def get_new_posts(self):
         existings = [found.id for found in session.query(Post).filter(
@@ -54,5 +54,5 @@ class MilanunciosCrawler:
         self.get_last_posts()
         self.get_new_posts()
         self.store_new_posts()
-        return ['{}\n{}'.format(post['description'], 'https://www.milanuncios.com{}'.format(post['href'])) for
-                post in self.new_posts]
+        return [{'text': '{}\n{}'.format(post['description'], 'https://www.milanuncios.com{}'.format(post['href'])),
+                 'image': post['image']} for post in self.new_posts]
