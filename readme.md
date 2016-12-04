@@ -13,7 +13,7 @@ The first integration is milanuncios.com
 6. Run TelegramWriter with these crawlers and configure it with the proper token and channel id where you want to receive the updates
 
 Bot example
-```python`
+```python
 from milanuncios_crawler import MilanunciosCrawler
 from telegram_writer import TelegramWriter
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     bot_2 = MilanunciosCrawler(here_your_second_milanuncios_url)
     telegram = TelegramWriter(here_your_telegram_bot_token, here_your_channel_id)
     telegram.run([bot_1, bot_2], wait_seconds=60)
-``
+```
 
 As you can see, TelegramWritter.run is designed to receive multiple crawler objects. 
 If you want to add some other, you just have to create a class with a method "get" that returns a strings list with the messages to send
