@@ -1,11 +1,12 @@
 # coding=utf-8
 
-from sqlalchemy.orm import load_only
-from db import session, Post
+import re
 
 import requests
 from bs4 import BeautifulSoup
-import re
+from sqlalchemy.orm import load_only
+
+from db import session, Post
 
 id_regex = re.compile('(\d+).htm')
 

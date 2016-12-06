@@ -1,5 +1,9 @@
-import telegram
+import datetime
 import time
+
+import telegram
+
+import settings
 
 
 class TelegramWriter:
@@ -11,12 +15,15 @@ class TelegramWriter:
 
         while True:
             for bot in bots:
+                if settings.DEBUG:
+                    print('Checking for news {}'.format(datetime.datetime.utcnow()))
                 try:
                     posts = bot.get()
+                    chat_id = self.chat
                     for post in posts:
-                        self.telegram.sendMessage(chat_id=self.chat, text=post['text'])
+                        self.telegram.sendMessage(chat_id=chat_id, text=post['text'])
                         if post['image']:
-                            self.telegram.sendPhoto(chat_id=self.chat, photo=post['image'])
+                            self.telegram.sendPhoto(chat_id=chat_id, photo=post['image'])
                 except Exception as e:
                     print(e)
             time.sleep(wait_seconds)

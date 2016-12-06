@@ -10,18 +10,21 @@ The first integration is milanuncios.com
 3. Import TelegramWritter and the crawler classes (MilanunciosCrawler for now)
 4. Create a MilanunciosCrawler for every search you want to receive updates
 5. Register a Telegram bot and get the token
-6. Run TelegramWriter with these crawlers and configure it with the proper token and channel id where you want to receive the updates
+6. Get the chat_id, you can follow this link to get it https://fullmeter.com/blog/?p=14 or directly use this patter:
+  https://api.telegram.org/bot<telegram_token>/getupdates
+7. Run TelegramWriter with these crawlers and configure it with the proper token and channel id where you want to receive the updates
 
 Bot example
 ```python
+from settings import TELEGRAM_TOKEN, BOT_CHAT_ID, CHECKING_TIMEOUT
 from milanuncios_crawler import MilanunciosCrawler
 from telegram_writer import TelegramWriter
 
 if __name__ == '__main__':
     bot_1 = MilanunciosCrawler(here_your_milanuncios_url)
     bot_2 = MilanunciosCrawler(here_your_second_milanuncios_url)
-    telegram = TelegramWriter(here_your_telegram_bot_token, here_your_channel_id)
-    telegram.run([bot_1, bot_2], wait_seconds=60)
+    telegram = TelegramWriter(TELEGRAM_TOKEN, BOT_CHAT_ID)
+    telegram.run([bot_1, bot_2], wait_seconds=CHECKING_TIMEOUT)
 ```
 
 As you can see, TelegramWritter.run is designed to receive multiple crawler objects. 
