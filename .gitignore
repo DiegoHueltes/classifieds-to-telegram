@@ -93,3 +93,5 @@ ENV/
 settings/local.py
 *.db
 .idea*
+.idea/
+posts.db
