@@ -1,4 +1,7 @@
+from __future__ import unicode_literals
+
 import datetime
+import sys
 import time
 import traceback
 
@@ -26,7 +29,11 @@ class TelegramWriter:
                         if post['image']:
                             self.telegram.sendPhoto(chat_id=chat_id, photo=post['image'])
                 except Exception as e:
-                    error_text = traceback.print_exc()
-                    print(error_text)
-                    self.telegram.sendMessage(chat_id=chat_id, text=error_text)
+                    exc_type, exc_value, exc_traceback = sys.exc_info()
+                    error_stack = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+                    print(error_stack)
+                    try:
+                        self.telegram.sendMessage(chat_id=chat_id, text=error_stack)
+                    except Exception:
+                        pass
             time.sleep(wait_seconds)
