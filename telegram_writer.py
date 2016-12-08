@@ -32,8 +32,9 @@ class TelegramWriter:
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     error_stack = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
                     print(error_stack)
-                    try:
-                        self.telegram.sendMessage(chat_id=chat_id, text=error_stack)
-                    except Exception:
-                        pass
+                    if settings.SEND_ERRORS_BY_TELEGRAM:
+                        try:
+                            self.telegram.sendMessage(chat_id=settings.ERRORS_TELEGRAM_CHAT_ID, text=error_stack)
+                        except Exception:
+                            pass
             time.sleep(wait_seconds)
