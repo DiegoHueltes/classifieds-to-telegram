@@ -33,6 +33,11 @@ If you want to add some other, you just have to create a class with a method "ge
 {'image': image_url, 'text': text_to_send}
 ```
 
+## Instalation in Raspberry Pi or with Python from source
+If your system doesn't have python 3.4+ and you are forced to compile it from source (like using a Raspberry Pi) remember to compile it with openssl support to install pip and sqlite support:
+* sudo apt-get install libssl-dev openssl libsqlite3-dev
+* ./configure --enable-loadable-sqlite-extensions --with-ensurepip=install && make && make install
+
 ##TODO:
 1. Add some doc to the functions
 2. Create other crawlers (for instance idealista crawler)
