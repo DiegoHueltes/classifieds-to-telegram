@@ -11,9 +11,9 @@ import settings
 
 
 class TelegramWriter:
-    def __init__(self, token, chat):
+    def __init__(self, token, chat_id=None):
         self.telegram = telegram.Bot(token=token)
-        self.chat = chat
+        self.chat = chat_id
 
     def run(self, bots, wait_seconds):
 
@@ -21,9 +21,9 @@ class TelegramWriter:
             for bot in bots:
                 if settings.DEBUG:
                     print('Checking for news {}'.format(datetime.datetime.utcnow()))
-                chat_id = self.chat
+                chat_id = bot.chat_id or self.chat
                 try:
-                    posts = bot.get()
+                    posts = bot.get_last_updates()
                     for post in posts:
                         self.telegram.sendMessage(chat_id=chat_id, text=post['text'])
                         if post['image']:

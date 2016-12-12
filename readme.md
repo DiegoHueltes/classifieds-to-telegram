@@ -4,9 +4,9 @@ This is a project for sending classifieds filtered posts updates to a specific T
 The first integration is milanuncios.com
 
 ##Usage
-1. Create Python 3 virualenv (mkvirtualenv venv)
+1. Create Python 3.4+ virualenv (mkvirtualenv venv)
 2. Install requirements (pip install -r requirements.txt)
-3. Create sqllite databases (python init_db.py)
+3. Create sqllite databases (python db.py)
 3. Import TelegramWritter and the crawler classes (MilanunciosCrawler for now)
 4. Create a MilanunciosCrawler for every search you want to receive updates
 5. Register a Telegram bot and get the token
@@ -21,14 +21,14 @@ from milanuncios_crawler import MilanunciosCrawler
 from telegram_writer import TelegramWriter
 
 if __name__ == '__main__':
-    bot_1 = MilanunciosCrawler(here_your_milanuncios_url)
-    bot_2 = MilanunciosCrawler(here_your_second_milanuncios_url)
+    bot_1 = MilanunciosCrawler(here_your_milanuncios_url, chat_id or None)
+    bot_2 = MilanunciosCrawler(here_your_second_milanuncios_url, chat_id or None)
     telegram = TelegramWriter(TELEGRAM_TOKEN, BOT_CHAT_ID)
     telegram.run([bot_1, bot_2], wait_seconds=CHECKING_TIMEOUT)
 ```
 
 As you can see, TelegramWritter.run is designed to receive multiple crawler objects. 
-If you want to add some other, you just have to create a class with a method "get" that returns a list with the messages and photos to send in this format:
+If you want to add some other, you just have to create a class with a method "get_last_updates" that returns a list with the messages and photos to send in this format:
 ```python
 {'image': image_url, 'text': text_to_send}
 ```

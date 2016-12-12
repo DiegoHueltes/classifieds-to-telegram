@@ -95,3 +95,4 @@ settings/local.py
 .idea*
 .idea/
 posts.db
+dev/*

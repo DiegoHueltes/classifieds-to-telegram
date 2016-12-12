@@ -16,3 +16,11 @@ class Post(Base):
     href = Column(String)
     description = Column(String)
     image = Column(String)
+
+
+def init_db():
+    Post.metadata.create_all(engine)
+
+
+if __name__ == '__main__':
+    init_db()

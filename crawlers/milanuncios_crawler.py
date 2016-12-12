@@ -6,13 +6,15 @@ import requests
 from bs4 import BeautifulSoup
 from sqlalchemy.orm import load_only
 
+from crawlers.crawler_base import Crawler
 from db import session, Post
 
 id_regex = re.compile('(\d+).htm')
 
 
-class MilanunciosCrawler:
-    def __init__(self, url):
+class MilanunciosCrawler(Crawler):
+    def __init__(self, url, *args, **kwargs):
+        super(MilanunciosCrawler, self).__init__(*args, **kwargs)
         self.url = url
         self.last_posts = []
         self.new_posts = []
@@ -51,7 +53,7 @@ class MilanunciosCrawler:
         session.add_all([Post(**new_post) for new_post in self.new_posts])
         session.commit()
 
-    def get(self):
+    def get_last_updates(self):
         self.get_last_posts()
         self.get_new_posts()
         self.store_new_posts()
