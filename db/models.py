@@ -28,11 +28,11 @@ class Post(Base):
     __tablename__ = 'posts'
 
     id = Column(Integer, primary_key=True)
+    web_type = Column(String, ForeignKey('web_pages.web_type'), primary_key=True)
     href = Column(String)
     description = Column(String)
     image = Column(String)
     price = Column(Integer)
-    web_type = Column(String, ForeignKey('web_pages.web_type'))
 
     def __repr__(self):
         title = self.description[:20] if self.description else ''
