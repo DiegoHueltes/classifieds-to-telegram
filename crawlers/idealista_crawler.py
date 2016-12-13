@@ -43,9 +43,3 @@ class IdealistaCrawler(Crawler):
             description = '\n'.join([title, description, price, complete_href])
             last_posts.append(Post(id=id_post, href=complete_href, description=description, image=image_src))
         return last_posts
-
-
-if __name__ == '__main__':
-    url = 'https://www.idealista.com/alquiler-viviendas/marbella-malaga/con-precio-hasta_500/'
-    idc = IdealistaCrawler(url)
-    print(idc.get_last_posts())
