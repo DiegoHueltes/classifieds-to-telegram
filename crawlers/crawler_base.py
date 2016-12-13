@@ -47,8 +47,8 @@ class Crawler:
     def get_last_updates(self):
         """
         Fetch the last posts in the crawler, check if some of them are new, store if there are
-         some new and return the new one
-        :return: new posts
+         some new and return the new ones
+        :return: [posts]
         """
         self.last_posts = self.get_last_posts()
         self.new_posts = self.get_new_posts(self.last_posts)

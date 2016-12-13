@@ -6,13 +6,17 @@ Already supporting updates on milanuncios.com and idealista.com
 ##Usage
 1. Create Python 3.4+ virualenv (mkvirtualenv venv)
 2. Install requirements (pip install -r requirements.txt)
-3. Create sqllite databases (python db.py)
-3. Import TelegramWritter and the crawler classes (MilanunciosCrawler or IdealistaCrawler for now)
-4. Create a Crawler for every search you want to receive updates
-5. Register a Telegram bot and get the token
-6. Get the chat_id, you can follow this link to get it https://fullmeter.com/blog/?p=14 or directly use this patter:
+3. Create sqllite databases:
+```
+>>> export PYTHONPATH=.
+>>> python db/__init__.py
+```
+4. Import TelegramWritter and the crawler classes (MilanunciosCrawler or IdealistaCrawler for now)
+5. Create a Crawler for every search you want to receive updates
+6. Register a Telegram bot and get the token
+7. Get the chat_id, you can follow this link to get it https://fullmeter.com/blog/?p=14 or directly use this patter:
   https://api.telegram.org/bot<telegram_token>/getupdates
-7. Run TelegramWriter with these crawlers and configure it with the proper token and channel id where you want to receive the updates
+8. Run TelegramWriter with these crawlers and configure it with the proper token and channel id where you want to receive the updates
 
 Bot example
 ```python
