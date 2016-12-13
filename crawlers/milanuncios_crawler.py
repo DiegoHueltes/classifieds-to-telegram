@@ -44,7 +44,7 @@ class MilanunciosCrawler(Crawler):
             image_element = post.find("img", {"class": "ee"})
             image = image_element['src'] if image_element else ''
             other_info = ' '.join([tag.text for tag in post.findAll("div", {"class": "tag-mobile"})])
-            description = '\n'.join([title, description, type_rent, other_info, price])
             complete_href = self.crawler_url + href
+            description = '\n'.join([title, description, type_rent, other_info, price, complete_href])
             last_posts.append(Post(id=id_post, href=complete_href, description=description, image=image))
         return last_posts
