@@ -1,14 +1,14 @@
 ## Classifieds to Telegram library
 
 This is a project for sending classifieds filtered posts updates to a specific Telegram channel
-The first integration is milanuncios.com
+Already supporting updates on milanuncios.com and idealista.com
 
 ##Usage
 1. Create Python 3.4+ virualenv (mkvirtualenv venv)
 2. Install requirements (pip install -r requirements.txt)
 3. Create sqllite databases (python db.py)
-3. Import TelegramWritter and the crawler classes (MilanunciosCrawler for now)
-4. Create a MilanunciosCrawler for every search you want to receive updates
+3. Import TelegramWritter and the crawler classes (MilanunciosCrawler or IdealistaCrawler for now)
+4. Create a Crawler for every search you want to receive updates
 5. Register a Telegram bot and get the token
 6. Get the chat_id, you can follow this link to get it https://fullmeter.com/blog/?p=14 or directly use this patter:
   https://api.telegram.org/bot<telegram_token>/getupdates
@@ -28,10 +28,12 @@ if __name__ == '__main__':
 ```
 
 As you can see, TelegramWritter.run is designed to receive multiple crawler objects. 
-If you want to add some other, you just have to create a class with a method "get_last_updates" that returns a list with the messages and photos to send in this format:
-```python
-{'image': image_url, 'text': text_to_send}
-```
+
+If you want to add some other, you just have to:
+* Create a class inereted from __Crawler__ 
+* Add the class variables page_type and page_url for the new crawler
+* Implement the __get_last_updates__ method returning a list of __Post__ objects
+
 
 ## Instalation in Raspberry Pi or with Python from source
 If your system doesn't have python 3.4+ and you are forced to compile it from source (like using a Raspberry Pi) remember to compile it with openssl support to install pip and sqlite support:
@@ -40,5 +42,5 @@ If your system doesn't have python 3.4+ and you are forced to compile it from so
 
 ##TODO:
 1. Add some doc to the functions
-2. Create other crawlers (for instance idealista crawler)
+2. Create other crawlers ~~(for instance idealista crawler)~ (for instance fotocasa)
 3. Make it reactive to bot interactions (so, make it a real bot). Some useful custom actions would be to add new urls to track

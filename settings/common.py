@@ -1,3 +1,7 @@
+import os
+
+project_dir = os.path.dirname(os.path.abspath(__file__))
+DB_NAME = os.path.join(project_dir, os.pardir, 'posts_n_webs.db')
 TELEGRAM_TOKEN = '<telegram_token>'
 BOT_CHAT_ID = '<chat_id>'
 SEND_ERRORS_BY_TELEGRAM = False

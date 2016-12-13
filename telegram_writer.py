@@ -25,9 +25,9 @@ class TelegramWriter:
                 try:
                     posts = bot.get_last_updates()
                     for post in posts:
-                        self.telegram.sendMessage(chat_id=chat_id, text=post['text'])
-                        if post['image']:
-                            self.telegram.sendPhoto(chat_id=chat_id, photo=post['image'])
+                        self.telegram.sendMessage(chat_id=chat_id, text=post.description)
+                        if post.image:
+                            self.telegram.sendPhoto(chat_id=chat_id, photo=post.image)
                 except Exception as e:
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     error_stack = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
