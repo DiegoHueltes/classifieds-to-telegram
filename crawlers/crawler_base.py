@@ -1,3 +1,7 @@
+import traceback
+
+from sqlalchemy.exc import IntegrityError
+
 from db import get_or_create
 from db.models import session, WebPage, Post
 
@@ -28,11 +32,13 @@ class Crawler:
         Checking if some of the last_posts are already in the database
         :return:
         """
+        if not last_posts:
+            return []
         ids_by_web_type = session.query(Post).filter(Post.web_type == self.web_page.web_type)
-        last_posts_ids = [x.id for x in last_posts]
+        last_posts_ids = [int(x.id) for x in last_posts]
         already_tracked = ids_by_web_type.filter(Post.id.in_(last_posts_ids)).all()
         tracked_ids = {x.id for x in already_tracked}
-        return [x for x in last_posts if x.id not in tracked_ids]
+        return [x for x in last_posts if int(x.id) not in tracked_ids]
 
     def store_new_posts(self, posts):
         """
@@ -42,7 +48,11 @@ class Crawler:
         for p in posts:
             p.web_type = self.web_page.web_type
         session.add_all(posts)
-        session.commit()
+        try:
+            session.commit()
+        except IntegrityError:
+            traceback.print_exc()
+            session.rollback()
 
     def get_last_updates(self):
         """
