@@ -5,7 +5,7 @@ from db.models import session
 from db.models import engine
 
 
-def init_db():
+def init_db(engine):
     Post.metadata.create_all(engine)
     WebPage.metadata.create_all(engine)
 
@@ -22,4 +22,4 @@ def get_or_create(model, **kwargs):
 
 
 if __name__ == '__main__':
-    init_db()
+    init_db(engine=engine)

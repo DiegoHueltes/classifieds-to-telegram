@@ -4,11 +4,11 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
 
-from settings import DB_NAME
+from settings import DB_PATH
 
-engine = create_engine('sqlite:////{}'.format(DB_NAME))
+engine = create_engine('sqlite:////{}'.format(DB_PATH))
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 session = Session()
