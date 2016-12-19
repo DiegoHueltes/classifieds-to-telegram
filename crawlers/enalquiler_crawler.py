@@ -28,9 +28,12 @@ class EnalquilerCrawler(Crawler):
         last_posts = []
         r = requests.get(self.target_url)
         html = BeautifulSoup(r.content, 'html.parser')
-        raw_posts = html.findAll("li", {"class": "property-pago"})
+        raw_posts = html.findAll("li", {"class": "property-item"})
 
         for post in raw_posts:
+            list_position = post.get('list-position')
+            if not list_position:
+                continue
             title_element = post.find("a", {"class": "property-title"})
             title = cleaning_spaces(title_element.text)
             href = title_element['href']
