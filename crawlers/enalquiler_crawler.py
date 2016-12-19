@@ -36,13 +36,14 @@ class EnalquilerCrawler(Crawler):
             href = title_element['href']
             description = cleaning_spaces(post.find("div", {"class": "property-info-wrapper"}).text)
             id_post = int(post['list-item'])
-            price = cleaning_spaces(post.find("div", {"class": "property-price"}).text)[:-2]  # Removing currency symbol
+            price_full = cleaning_spaces(post.find("div", {"class": "property-price"}).text)
+            price = price_full[:-2]  # Removing currency symbol
             image_element = post.find('div', {'class': 'property-img-wrapper'})
             image_src = None
             if image_element:
                 image_src = image_element.get('images-path', '').replace('{width}', 'se')
             complete_href = href
-            description = '\n'.join([title, description, price, complete_href])
+            description = '\n'.join([title, price_full, description, complete_href])
             last_posts.append(Post(id=id_post, href=complete_href, description=description, image=image_src,
                                    price=price))
         return last_posts
