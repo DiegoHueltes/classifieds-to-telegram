@@ -32,11 +32,11 @@ class EnalquilerCrawler(Crawler):
 
         for post in raw_posts:
             title_element = post.find("a", {"class": "property-title"})
-            title = title_element.text.strip()
+            title = cleaning_spaces(title_element.text)
             href = title_element['href']
-            description = post.find("div", {"class": "property-info-wrapper"}).text.strip()
+            description = cleaning_spaces(post.find("div", {"class": "property-info-wrapper"}).text)
             id_post = int(post['list-item'])
-            price = post.find("div", {"class": "property-price"}).text.strip()[:-2]  # Removing currency symbol
+            price = cleaning_spaces(post.find("div", {"class": "property-price"}).text)[:-2]  # Removing currency symbol
             image_element = post.find('div', {'class': 'property-img-wrapper'})
             image_src = None
             if image_element:
@@ -46,3 +46,7 @@ class EnalquilerCrawler(Crawler):
             last_posts.append(Post(id=id_post, href=complete_href, description=description, image=image_src,
                                    price=price))
         return last_posts
+
+
+def cleaning_spaces(txt):
+    return ' '.join(txt.split())
