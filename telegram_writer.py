@@ -38,17 +38,24 @@ class TelegramWriter:
                                 except BadRequest:
                                     pass
                             if len(posts):
-                                time.sleep(5)  # 5 seconds to don't kill the telegram API
+                                time.sleep(3)  # 3 seconds to don't kill the telegram API
                         except RetryAfter as e:
                             # Flood control exceeded. Retry in 175 seconds
-                            time.sleep(175)
-                except Exception as e:
+                            self.send_error('RetryAfter error, waiting {} seconds'.format(e.retry_after))
+                            time.sleep(e.retry_after)
+                except Exception:
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     error_stack = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
-                    if settings.SEND_ERRORS_BY_TELEGRAM:
-                        try:
-                            self.telegram.sendMessage(chat_id=settings.ERRORS_TELEGRAM_CHAT_ID, text=error_stack)
-                        except Exception:
-                            pass
-                    print(error_stack)
+                    self.send_error(error_stack)
             time.sleep(wait_seconds)
+
+    def send_error(self, text):
+        """
+        Sending text using telegram and error channel
+        :param text: text to be sent
+        """
+        try:
+            self.telegram.sendMessage(chat_id=settings.ERRORS_TELEGRAM_CHAT_ID, text=text)
+        except Exception:
+            pass
+        print(text)
