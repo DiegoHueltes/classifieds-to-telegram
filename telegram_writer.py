@@ -6,7 +6,7 @@ import time
 import traceback
 
 import telegram
-from telegram.error import BadRequest
+from telegram.error import BadRequest, RetryAfter
 
 import settings
 
@@ -30,14 +30,18 @@ class TelegramWriter:
                     if settings.DEBUG:
                         print('-- {} New posts found'.format(len(posts)))
                     for post in posts:
-                        self.telegram.sendMessage(chat_id=chat_id, text=post.description)
-                        if post.image:
-                            try:
-                                self.telegram.sendPhoto(chat_id=chat_id, photo=post.image)
-                            except BadRequest:
-                                pass
-                    if len(posts):
-                        time.sleep(5)  # 5 seconds to don't kill the telegram API
+                        try:
+                            self.telegram.sendMessage(chat_id=chat_id, text=post.description)
+                            if post.image:
+                                try:
+                                    self.telegram.sendPhoto(chat_id=chat_id, photo=post.image)
+                                except BadRequest:
+                                    pass
+                            if len(posts):
+                                time.sleep(5)  # 5 seconds to don't kill the telegram API
+                        except RetryAfter as e:
+                            # Flood control exceeded. Retry in 175 seconds
+                            time.sleep(175)
                 except Exception as e:
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     error_stack = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
