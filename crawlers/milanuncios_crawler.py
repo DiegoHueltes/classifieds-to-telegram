@@ -35,15 +35,15 @@ class MilanunciosCrawler(Crawler):
 
         for post in raw_posts:
             title_element = post.find("a", {"class": "aditem-detail-title"})
-            title = title_element.text
-            description = post.find("div", {"class": "tx"}).text
-            href = title_element['href']
+            title = self.text(title_element)
+            description = self.text(post.find("div", {"class": "tx"}))
+            href = title_element.get('href')
             id_post = id_regex.search(href).group(1)
-            type_rent = post.find("div", {"class": "pillDiv"}).text
-            price = post.find("div", {"class": "aditem-price"}).text
+            type_rent = self.text(post.find("div", {"class": "pillDiv"}))
+            price = self.text(post.find("div", {"class": "aditem-price"}))
             image_element = post.find("img", {"class": "ee"})
-            image = image_element['src'] if image_element else ''
-            other_info = ' '.join([tag.text for tag in post.findAll("div", {"class": "tag-mobile"})])
+            image = image_element.get('src') if image_element else ''
+            other_info = ' '.join([self.text(tag) for tag in post.findAll("div", {"class": "tag-mobile"})])
             complete_href = self.crawler_url + href
             description = '\n'.join([title, description, type_rent, other_info, price, complete_href])
             last_posts.append(Post(id=id_post, href=complete_href, description=description, image=image))

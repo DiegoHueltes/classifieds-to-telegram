@@ -32,11 +32,11 @@ class IdealistaCrawler(Crawler):
 
         for post in raw_posts:
             title_element = post.find("a", {"class": "item-link"})
-            title = title_element.text
+            title = self.text(title_element)
             href = title_element['href']
-            description = post.find("div", {"class": "item-info-container"}).text
+            description = self.text(post.find("div", {"class": "item-info-container"}))
             id_post = int(post['data-adid'])
-            price = post.find("span", {"class": "item-price"}).text
+            price = self.text(post.find("span", {"class": "item-price"}))
             image_element = post.find_all("img")
             image_src = image_element[0]['data-ondemand-img'] if image_element else None
             complete_href = self.crawler_url + href

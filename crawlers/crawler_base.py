@@ -65,3 +65,12 @@ class Crawler:
         if self.new_posts:
             self.store_new_posts(self.new_posts)
         return self.new_posts
+
+    @staticmethod
+    def text(element) -> str:
+        """
+        Extracts the text from the BeautifulSoup element safety or return ''
+        :param element: BeutifulSoup element
+        :return: BaseString
+        """
+        return element.text if element and hasattr(element, 'text') else ''
