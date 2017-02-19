@@ -30,41 +30,60 @@ class Crawler:
     def get_new_posts(self, last_posts):
         """
         Checking if some of the last_posts are already in the database
-        :return:
+        :return: [Post]
         """
         if not last_posts:
             return []
         ids_by_web_type = session.query(Post).filter(Post.web_type == self.web_page.web_type)
-        last_posts_ids = [int(x.id) for x in last_posts]
+        last_posts_ids = [x.id for x in last_posts]
         already_tracked = ids_by_web_type.filter(Post.id.in_(last_posts_ids)).all()
         tracked_ids = {x.id for x in already_tracked}
-        return [x for x in last_posts if int(x.id) not in tracked_ids]
+        return [x for x in last_posts if x.id not in tracked_ids]
 
-    def store_new_posts(self, posts):
+    def store_posts(self, posts, chat_id=None, status=None):
         """
         Save the posts passed as parameter
         :param posts: iterator of posts usually [Post]
+        :param chat_id: chat id where to send this post
+        :param status: status to set to all the posts
+        :return [Post]
         """
         for p in posts:
-            p.web_type = self.web_page.web_type
-        session.add_all(posts)
+            p.web_type = self.web_type
+            p.to_send_id = p.to_send_id or chat_id
+            if status:
+                p.status = status
+        return self.save_posts(posts)
+
+    @staticmethod
+    def save_posts(posts):
         try:
+            session.add_all(posts)
             session.commit()
         except IntegrityError:
             traceback.print_exc()
             session.rollback()
+        return posts
 
-    def get_last_updates(self):
+    @staticmethod
+    def get_post_to_send():
+        """
+        Get the posts to be sent
+        :return: [Post]
+        """
+        return session.query(Post).filter(Post.status != 'SENT').all()
+
+    def save_last_updates(self, chat_id):
         """
         Fetch the last posts in the crawler, check if some of them are new, store if there are
          some new and return the new ones
-        :return: [posts]
+        :return: [Post]
         """
         self.last_posts = self.get_last_posts()
         self.new_posts = self.get_new_posts(self.last_posts)
         if self.new_posts:
-            self.store_new_posts(self.new_posts)
-        return self.new_posts
+            return self.store_posts(self.new_posts, chat_id, 'SAVED')
+        return []
 
     @staticmethod
     def text(element) -> str:

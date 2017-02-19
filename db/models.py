@@ -1,4 +1,5 @@
 from sqlalchemy import Column
+from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -21,18 +22,20 @@ class WebPage(Base):
     url = Column(String)
 
     def __repr__(self):
-        return '<WebPage(url={})'.format(self.url)
+        return '<WebPage(url={})>'.format(self.url)
 
 
 class Post(Base):
     __tablename__ = 'posts'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     web_type = Column(String, ForeignKey('web_pages.web_type'), primary_key=True)
     href = Column(String)
     description = Column(String)
     image = Column(String)
-    price = Column(Integer)
+    price = Column(Float)
+    status = Column(String, nullable=False)  # possible {SAVED, SENT, ERROR}
+    to_send_id = Column(Integer)  # Chat id where to send this Post
 
     def __repr__(self):
         title = self.description[:20] if self.description else ''

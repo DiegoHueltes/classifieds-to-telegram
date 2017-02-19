@@ -2,3 +2,4 @@ requests
 bs4
 sqlalchemy
 python-telegram-bot
+gevent

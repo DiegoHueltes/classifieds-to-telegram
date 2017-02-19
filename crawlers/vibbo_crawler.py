@@ -36,7 +36,7 @@ class VibboCrawler(Crawler):
             href = title_element['href']
             description = ' -- '.join(map(self.text, [post.find("p", {"class": "zone"}),
                                                       post.find("p", {"class": "date"})]))
-            id_post = int(post['id'])
+            id_post = str(post['id'])
             price_full = cleaning_spaces(self.text(post.find("a", {"class": "subjectPrice"})))
             price = int(price_full[:-1].replace('.', ''))  # Removing currency symbol
             image_element = post.find('img', {'class': 'lazy'})
