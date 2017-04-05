@@ -48,6 +48,7 @@ If your system doesn't have python 3.4+ and you are forced to compile it from so
 1. Add some doc to the functions
 2. Create other crawlers~
  * ~~idealista crawler~~ 
- * ~~Enalquiler~~ 
+ * ~~Enalquiler~~
+ * ~~Wallapop~~
  * fotocasa
 3. Make it reactive to bot interactions (so, make it a real bot). Some useful custom actions would be to add new urls to track
