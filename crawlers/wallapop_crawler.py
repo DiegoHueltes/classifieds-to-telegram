@@ -32,6 +32,8 @@ class WallapopCrawler(Crawler):
 
         for post in raw_posts:
             title_element = post.find("a", {"class": "product-info-title"})
+            if not title_element:
+                continue
             title = cleaning_spaces(self.text(title_element))
             href = title_element['href']
             description = self.text(post.find("a", {"class": "product-info-category"}))
