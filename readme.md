@@ -3,7 +3,7 @@
 This is a project for sending classifieds filtered posts updates to a specific Telegram channel
 Already supporting updates on milanuncios.com and idealista.com
 
-##Usage
+## Usage
 1. Create Python 3.4+ virualenv (mkvirtualenv venv)
 2. Install requirements (pip install -r requirements.txt)
 3. Create sqllite databases:
@@ -44,9 +44,9 @@ If your system doesn't have python 3.4+ and you are forced to compile it from so
 * sudo apt-get install libssl-dev openssl libsqlite3-dev
 * ./configure --enable-loadable-sqlite-extensions --with-ensurepip=install && make && make install
 
-##TODO:
+## TODO:
 1. Add some doc to the functions
-2. Create other crawlers~
+2. Create other crawlers
  * ~~idealista crawler~~ 
  * ~~Enalquiler~~
  * ~~Wallapop~~
