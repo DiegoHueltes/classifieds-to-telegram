@@ -4,7 +4,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-from crawlers.crawler_base import Crawler, cleaning_spaces
+from crawlers.crawler_base import Crawler
 from db.models import Post
 
 
@@ -53,3 +53,10 @@ class WallapopCrawler(Crawler):
         return last_posts
 
 
+def cleaning_spaces(txt):
+    try:
+        if not txt:
+            return ''
+        return ' '.join(txt.split())
+    except:
+        print(txt)
