@@ -1,10 +1,10 @@
 # coding=utf-8
-
+import re
 
 import requests
 from bs4 import BeautifulSoup
 
-from crawlers.crawler_base import Crawler
+from crawlers.crawler_base import Crawler, cleaning_spaces
 from db.models import Post
 
 
@@ -39,7 +39,9 @@ class WallapopCrawler(Crawler):
             description = self.text(post.find("a", {"class": "product-info-category"}))
             id_post = str(href.split('-')[-1])
             price_full = cleaning_spaces(self.text(post.find("span", {"class": "product-info-price"})))
-            price = int(price_full[:-1].replace('.', ''))  # Removing currency symbol
+            price = re.search('\d+', price_full)  # getting the integer values of the price
+            if price:
+                price = int(price.group()) if price.group() else -1
             image_element = post.find('img', {'class': 'card-product-image'})
             image_src = None
             if image_element:
@@ -51,10 +53,3 @@ class WallapopCrawler(Crawler):
         return last_posts
 
 
-def cleaning_spaces(txt):
-    try:
-        if not txt:
-            return ''
-        return ' '.join(txt.split())
-    except:
-        print(txt)
